@@ -1,0 +1,25 @@
+version: 3
+projects:
+  - name: dev
+    dir: .
+    workspace: homelabs-dev
+    autoplan:
+      when_modified: ["*.tf"]
+      enabled: true
+    apply_requirements: [approved]
+    workflow: default
+    env:
+      - name: AWS_ROLE_ARN
+        value: arn:aws:iam::470582026074:role/TerraformExecutionRole
+
+  - name: prod
+    dir: .
+    workspace: homelabs-prod
+    autoplan:
+      when_modified: ["*.tf"]
+      enabled: true
+    apply_requirements: [approved]
+    workflow: default
+    env:
+      - name: AWS_ROLE_ARN
+        value: arn:aws:iam::213265226749:role/TerraformExecutionRole
