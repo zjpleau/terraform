@@ -1,51 +1,9 @@
 version: 3
 
-workflows:
-  cross-account-dev:
-    plan:
-      steps:
-        - env:
-            name: AWS_ROLE_ARN
-            value: arn:aws:iam::470582026074:role/TerraformExecutionRole
-        - init
-        - plan
-    apply:
-      steps:
-        - env:
-            name: AWS_ROLE_ARN
-            value: arn:aws:iam::470582026074:role/TerraformExecutionRole
-        - apply
-
-  cross-account-prod:
-    plan:
-      steps:
-        - env:
-            name: AWS_ROLE_ARN
-            value: arn:aws:iam::213265226749:role/TerraformExecutionRole
-        - init
-        - plan
-    apply:
-      steps:
-        - env:
-            name: AWS_ROLE_ARN
-            value: arn:aws:iam::213265226749:role/TerraformExecutionRole
-        - apply
-
+# Only override the workflow name for each project;
+# all other settings come from your central server-config.yaml.
 projects:
   - name: dev
-    dir: .
-    workspace: homelabs-dev
-    autoplan:
-      enabled: true
-      when_modified: ["*.tf"]
-    apply_requirements: [approved]
     workflow: cross-account-dev
-
   - name: prod
-    dir: .
-    workspace: homelabs-prod
-    autoplan:
-      enabled: true
-      when_modified: ["*.tf"]
-    apply_requirements: [approved]
     workflow: cross-account-prod
