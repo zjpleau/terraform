@@ -1,5 +1,0 @@
-# atlantis.yaml
-version: 3
-projects:
-  - dir: .
-    workspace: default
