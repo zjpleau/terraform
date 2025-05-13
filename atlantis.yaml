@@ -1,9 +1,8 @@
 version: 3
 
-# tell Atlantis which repos this applies to, and what it may override
 repos:
-  - id: /.*/                             # applies to every repo; you can narrow to "zjpleau/terraform"
-    allowed_overrides: [workflow, env]  # allow PRs to pick custom workflows and env vars
+  - id: zjpleau/terraform
+    allowed_overrides: [workflow]
     workflows:
       cross-account-dev:
         plan:
@@ -40,8 +39,8 @@ projects:
     dir: .
     workspace: homelabs-dev
     autoplan:
-      when_modified: ["*.tf"]
       enabled: true
+      when_modified: ["*.tf"]
     apply_requirements: [approved]
     workflow: cross-account-dev
 
@@ -49,7 +48,7 @@ projects:
     dir: .
     workspace: homelabs-prod
     autoplan:
-      when_modified: ["*.tf"]
       enabled: true
+      when_modified: ["*.tf"]
     apply_requirements: [approved]
     workflow: cross-account-prod
