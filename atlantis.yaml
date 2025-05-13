@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 workflows:
   cross-account-dev:
@@ -35,19 +35,17 @@ projects:
   - name: dev
     dir: .
     workspace: homelabs-dev
-    workflow: cross-account-dev
     autoplan:
       enabled: true
       when_modified: ["*.tf"]
     apply_requirements: [approved]
-    allow_custom_workflow: true
+    workflow: cross-account-dev
 
   - name: prod
     dir: .
     workspace: homelabs-prod
-    workflow: cross-account-prod
     autoplan:
       enabled: true
       when_modified: ["*.tf"]
     apply_requirements: [approved]
-    allow_custom_workflow: true
+    workflow: cross-account-prod
