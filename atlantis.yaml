@@ -1,54 +1,53 @@
-version: 3
+version: 2
 
-repos:
-  - id: zjpleau/terraform
-    allowed_overrides: [workflow]
-    workflows:
-      cross-account-dev:
-        plan:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::470582026074:role/TerraformExecutionRole
-            - init
-            - plan
-        apply:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::470582026074:role/TerraformExecutionRole
-            - apply
+workflows:
+  cross-account-dev:
+    plan:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::470582026074:role/TerraformExecutionRole
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::470582026074:role/TerraformExecutionRole
+        - apply
 
-      cross-account-prod:
-        plan:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::213265226749:role/TerraformExecutionRole
-            - init
-            - plan
-        apply:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::213265226749:role/TerraformExecutionRole
-            - apply
+  cross-account-prod:
+    plan:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::213265226749:role/TerraformExecutionRole
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::213265226749:role/TerraformExecutionRole
+        - apply
 
 projects:
   - name: dev
     dir: .
     workspace: homelabs-dev
+    workflow: cross-account-dev
     autoplan:
       enabled: true
       when_modified: ["*.tf"]
     apply_requirements: [approved]
-    workflow: cross-account-dev
+    allow_custom_workflow: true
 
   - name: prod
     dir: .
     workspace: homelabs-prod
+    workflow: cross-account-prod
     autoplan:
       enabled: true
       when_modified: ["*.tf"]
     apply_requirements: [approved]
-    workflow: cross-account-prod
+    allow_custom_workflow: true
