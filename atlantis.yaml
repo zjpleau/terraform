@@ -1,4 +1,32 @@
 version: 3
+
+workflows:
+  cross-account-dev:
+    plan:
+      steps:
+        - env:
+            AWS_ROLE_ARN: arn:aws:iam::470582026074:role/TerraformExecutionRole
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            AWS_ROLE_ARN: arn:aws:iam::470582026074:role/TerraformExecutionRole
+        - apply
+
+  cross-account-prod:
+    plan:
+      steps:
+        - env:
+            AWS_ROLE_ARN: arn:aws:iam::213265226749:role/TerraformExecutionRole
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            AWS_ROLE_ARN: arn:aws:iam::213265226749:role/TerraformExecutionRole
+        - apply
+
 projects:
   - name: dev
     dir: .
@@ -7,10 +35,7 @@ projects:
       when_modified: ["*.tf"]
       enabled: true
     apply_requirements: [approved]
-    workflow: default
-    env:
-      - name: AWS_ROLE_ARN
-        value: arn:aws:iam::470582026074:role/TerraformExecutionRole
+    workflow: cross-account-dev
 
   - name: prod
     dir: .
@@ -19,7 +44,4 @@ projects:
       when_modified: ["*.tf"]
       enabled: true
     apply_requirements: [approved]
-    workflow: default
-    env:
-      - name: AWS_ROLE_ARN
-        value: arn:aws:iam::213265226749:role/TerraformExecutionRole
+    workflow: cross-account-prod
