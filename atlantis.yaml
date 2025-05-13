@@ -1,8 +1,7 @@
 version: 3
 
 # Only override the workflow name for each project;
-# all other settings (dir, workspace, autoplan, etc.)
-# come from your central server-config.yaml.
+# all other settings come from your central server-config.yaml.
 projects:
   - name: dev
     workflow: cross-account-dev
