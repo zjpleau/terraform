@@ -1,47 +1,43 @@
 version: 3
 
-# tell Atlantis which repos this applies to, and what it may override
-repos:
-  - id: /.*/                             # applies to every repo; you can narrow to "zjpleau/terraform"
-    allowed_overrides: [workflow, env]  # allow PRs to pick custom workflows and env vars
-    workflows:
-      cross-account-dev:
-        plan:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::470582026074:role/TerraformExecutionRole
-            - init
-            - plan
-        apply:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::470582026074:role/TerraformExecutionRole
-            - apply
+workflows:
+  cross-account-dev:
+    plan:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::470582026074:role/TerraformExecutionRole
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::470582026074:role/TerraformExecutionRole
+        - apply
 
-      cross-account-prod:
-        plan:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::213265226749:role/TerraformExecutionRole
-            - init
-            - plan
-        apply:
-          steps:
-            - env:
-                name: AWS_ROLE_ARN
-                value: arn:aws:iam::213265226749:role/TerraformExecutionRole
-            - apply
+  cross-account-prod:
+    plan:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::213265226749:role/TerraformExecutionRole
+        - init
+        - plan
+    apply:
+      steps:
+        - env:
+            name: AWS_ROLE_ARN
+            value: arn:aws:iam::213265226749:role/TerraformExecutionRole
+        - apply
 
 projects:
   - name: dev
     dir: .
     workspace: homelabs-dev
     autoplan:
-      when_modified: ["*.tf"]
       enabled: true
+      when_modified: ["*.tf"]
     apply_requirements: [approved]
     workflow: cross-account-dev
 
@@ -49,7 +45,7 @@ projects:
     dir: .
     workspace: homelabs-prod
     autoplan:
-      when_modified: ["*.tf"]
       enabled: true
+      when_modified: ["*.tf"]
     apply_requirements: [approved]
     workflow: cross-account-prod
