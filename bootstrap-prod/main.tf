@@ -1,10 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "my-org-terraform-state-dev"
-    key            = "bootstrap-dev/terraform.tfstate"
+    bucket         = "my-org-terraform-state-prod"
+    key            = "bootstrap-prod/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
-    # dynamodb_table is deprecated; state-locking will happen automatically
   }
 }
 
