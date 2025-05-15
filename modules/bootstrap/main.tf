@@ -1,14 +1,29 @@
 // modules/bootstrap/main.tf
 
+variable "state_bucket_name" {
+  description = "Name of the S3 bucket for Terraform remote state"
+  type        = string
+}
+
+variable "lock_table_name" {
+  description = "Name of the DynamoDB table for state locking"
+  type        = string
+}
+
+variable "environment" {
+  description = "Logical environment tag (e.g. dev, prod)"
+  type        = string
+}
+
 resource "aws_s3_bucket" "tfstate" {
   bucket = var.state_bucket_name
-  acl    = "private"
 
-  # Don’t attempt to change the ACL on this bucket
-  lifecycle {
-    ignore_changes = [acl]
+  # Enable versioning
+  versioning {
+    enabled = true
   }
 
+  # Enforce AES-256 encryption
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -17,49 +32,17 @@ resource "aws_s3_bucket" "tfstate" {
     }
   }
 
-  versioning {
-    enabled = true
-  }
-
-  tags = {
-    Environment = var.environment
-    Name        = var.state_bucket_name
-  }
-}
-
-=======
-# modules/bootstrap/main.tf
-# Create the S3 bucket for remote state
-resource "aws_s3_bucket" "tfstate" {
-  bucket = var.state_bucket_name
-
   tags = {
     Name        = var.state_bucket_name
     Environment = var.environment
   }
-}
 
-# Enable versioning on the bucket
-resource "aws_s3_bucket_versioning" "tfstate" {
-  bucket = aws_s3_bucket.tfstate.id
-
-  versioning_configuration {
-    status = "Enabled"
+  # Ignore ACL changes since our org buckets disable ACLs
+  lifecycle {
+    ignore_changes = [acl]
   }
 }
 
-# Enforce server‑side encryption (AES256)
-resource "aws_s3_bucket_server_side_encryption_configuration" "tfstate" {
-  bucket = aws_s3_bucket.tfstate.id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
-}
-
-# DynamoDB table for Terraform state locking
 resource "aws_dynamodb_table" "lock" {
   name         = var.lock_table_name
   billing_mode = "PAY_PER_REQUEST"
@@ -71,9 +54,6 @@ resource "aws_dynamodb_table" "lock" {
   }
 
   tags = {
-    Environment = var.environment
-    Name        = var.lock_table_name
-=======
     Name        = var.lock_table_name
     Environment = var.environment
   }
