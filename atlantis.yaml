@@ -1,9 +1,0 @@
-version: 3
-
-# Only override the workflow name for each project;
-# all other settings come from your central server-config.yaml.
-projects:
-  - name: dev
-    workflow: cross-account-dev
-  - name: prod
-    workflow: cross-account-prod
