@@ -1,0 +1,10 @@
+version: 3
+
+projects:
+  - name: bootstrap-dev
+    dir: bootstrap-dev
+    workflow: cross-account-dev
+
+  - name: bootstrap-prod
+    dir: bootstrap-prod
+    workflow: cross-account-prod
