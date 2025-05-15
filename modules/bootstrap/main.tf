@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // modules/bootstrap/main.tf
 
 resource "aws_s3_bucket" "tfstate" {
@@ -61,7 +60,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "tfstate" {
 }
 
 # DynamoDB table for Terraform state locking
->>>>>>> origin/main
 resource "aws_dynamodb_table" "lock" {
   name         = var.lock_table_name
   billing_mode = "PAY_PER_REQUEST"
@@ -73,12 +71,10 @@ resource "aws_dynamodb_table" "lock" {
   }
 
   tags = {
-<<<<<<< HEAD
     Environment = var.environment
     Name        = var.lock_table_name
 =======
     Name        = var.lock_table_name
     Environment = var.environment
->>>>>>> origin/main
   }
 }
