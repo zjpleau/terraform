@@ -4,17 +4,17 @@ terraform {
     key            = "bootstrap-dev/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
-    # dynamodb_table is deprecated; state-locking will happen automatically
+    use_lockfile   = true
   }
 }
 
 provider "aws" {
-  profile = var.aws_profile
   region  = var.aws_region
+  profile = var.aws_profile
 }
 
 module "bootstrap" {
-  source           = "../modules/bootstrap"
+  source            = "../modules/bootstrap"
   state_bucket_name = var.state_bucket_name
   lock_table_name   = var.lock_table_name
   environment       = var.environment

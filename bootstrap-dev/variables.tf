@@ -1,5 +1,5 @@
 variable "aws_region" {
-  description = "AWS region to deploy into"
+  description = "AWS region"
   type        = string
   default     = "us-east-1"
 }
@@ -11,7 +11,7 @@ variable "aws_profile" {
 }
 
 variable "state_bucket_name" {
-  description = "Name of the Terraform state S3 bucket"
+  description = "Name of the Terraform remote‑state S3 bucket"
   type        = string
   default     = "my-org-terraform-state-dev"
 }
